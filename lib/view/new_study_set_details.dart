@@ -1,15 +1,30 @@
+import 'package:flashcard_app/view/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 class NewStudySetDetailsView extends StatefulWidget {
-  const NewStudySetDetailsView({super.key});
+  NewStudySetDetailsView({super.key});
 
   @override
   State<NewStudySetDetailsView> createState() => _NewStudySetDetailsViewState();
+
 }
 
 class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
+
+  int index = 5;
+  Map<String,dynamic> notesDetails = {};
+  Map<String,Map<String,dynamic>> finalNotes = {};
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController schoolController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+    TextEditingController schoolController = TextEditingController();
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 10, 9, 45),
       appBar: AppBar(
@@ -70,14 +85,74 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                 color: Colors.white
             ),
           ),
-          for (int i=0;i<5;i++)
-            cardForEachSlide()
+          for (int i=0;i<index;i++)
+            cardForEachSlide(i),
+
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                index++;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20,right: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blueAccent
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 5,right: 5),
+                  child: Icon(Icons.add,
+                    color: Colors.white,
+                    size: 30,
+                  )
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 30,),
+          GestureDetector(
+            onTap: () {
+              // Navigator.push(context, (MaterialPageRoute(builder: (context) => const HomeView())));
+              notesDetails["title"] = titleController.text;
+              notesDetails["description"] = descriptionController.text;
+              notesDetails["school name"] = schoolController.text;
+              finalNotes["title"] = notesDetails;
+              print(finalNotes);
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.pink
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 5,right: 5),
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(
+                        fontFamily: "semibold",
+                        fontSize: 20,
+                        color: Colors.white
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 30,)
         ],
       ),
     );
   }
 
-  Widget cardForEachSlide() {
+  Widget cardForEachSlide(int index) {
+    TextEditingController termController = TextEditingController();
+    TextEditingController definitionController = TextEditingController();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
@@ -106,7 +181,8 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white)
                       )
-                  )
+                  ),
+                controller: termController,
               ),
               SizedBox(height: 6,),
               Text("TERM",
@@ -132,7 +208,8 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.white)
                       )
-                  )
+                  ),
+                controller: definitionController,
               ),
               SizedBox(height: 6,),
               Text("DEFINITION",
@@ -143,6 +220,16 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                 ),
               ),
               SizedBox(height: 30,),
+              Center(
+                child: MaterialButton(
+                    onPressed: (){
+                      notesDetails[index.toString()] = [termController.text,definitionController.text];
+                      print(notesDetails);
+                    },
+                  child: Text("OK"),
+                  color: Colors.blueAccent,
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -152,7 +239,7 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                   )
                 ],
               ),
-              SizedBox(height: 10,)
+              SizedBox(height: 10,),
             ],
           ),
         ),
@@ -197,6 +284,7 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       color: Colors.white
                   )
               ),
+              controller: titleController,
             ),
           ),
         ),
@@ -225,6 +313,7 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                 ),
               ),
               maxLines: 4,
+              controller: descriptionController,
             ),
           ),
         ),
@@ -252,6 +341,7 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       color: Colors.white
                   )
               ),
+              controller: schoolController,
             ),
           ),
         ),

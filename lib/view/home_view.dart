@@ -31,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, (MaterialPageRoute(builder: (context) => const NewStudySetDetailsView())));
+                Navigator.push(context, (MaterialPageRoute(builder: (context) =>  NewStudySetDetailsView())));
               },
               child: Container(
                 decoration: BoxDecoration(
