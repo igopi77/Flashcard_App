@@ -1,3 +1,4 @@
+import 'package:flashcard_app/view/new_study_set_details.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -30,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             GestureDetector(
               onTap: () {
-
+                Navigator.push(context, (MaterialPageRoute(builder: (context) => const NewStudySetDetailsView())));
               },
               child: Container(
                 decoration: BoxDecoration(
