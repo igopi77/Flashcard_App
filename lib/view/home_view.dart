@@ -1,3 +1,4 @@
+import 'package:flashcard_app/model/notesDetails.dart';
 import 'package:flashcard_app/view/new_study_set_details.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
 
   List<String> notes = ["Angles","9 Terms", "Kate_Napolitano"];
+  List<Map<String,dynamic>> allNotes = NotesDetails.notesDetails;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +77,17 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           SizedBox(height: 20,),
-          cardForNotes()
+          if (allNotes.isNotEmpty)
+            cardForNotes(),
+          if (allNotes.isEmpty)
+            Text(
+                "NO RECENTS",
+              style: TextStyle(
+                fontFamily: "semibold",
+                fontSize: 20,
+                color: Colors.blueAccent
+              ),
+            )
         ],
       ),
     );
@@ -115,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List.generate(6, (index) {
+        children: List.generate(allNotes.length, (index) {
           return Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Container(
@@ -127,59 +139,106 @@ class _HomeViewState extends State<HomeView> {
                 padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(notes.length, (index) {
-                      if (index == 0) {
-                        return Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),);
-                      }
-                      else if (index == 1) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 78, 93, 138)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 7,right: 7),
-                              child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                            )
+                    // children: List.generate(notes.length, (index) {
+                    //   if (index == 0) {
+                    //     return Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),);
+                    //   }
+                    //   else if (index == 1) {
+                    //     return Padding(
+                    //       padding: const EdgeInsets.only(top: 20),
+                    //       child: Container(
+                    //         decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           color: Color.fromARGB(255, 78, 93, 138)
+                    //         ),
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.only(left: 7,right: 7),
+                    //           child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                    //         )
+                    //       ),
+                    //     );
+                    //   }
+                    //   else {
+                    //     return Padding(
+                    //       padding: const EdgeInsets.only(top: 50,bottom: 10),
+                    //       child: Row(
+                    //         children: [
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(right: 10),
+                    //             child: Container(
+                    //               decoration: BoxDecoration(
+                    //                 borderRadius: BorderRadius.circular(30),
+                    //                 color: Colors.pink
+                    //               ),
+                    //               child: CircleAvatar(),
+                    //             ),
+                    //           ),
+                    //           Padding(
+                    //             padding: const EdgeInsets.only(right: 10),
+                    //             child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                    //           ),
+                    //           Container(
+                    //               decoration: BoxDecoration(
+                    //                   borderRadius: BorderRadius.circular(10),
+                    //                   color: Color.fromARGB(255, 78, 93, 138)
+                    //               ),
+                    //               child: Padding(
+                    //                 padding: const EdgeInsets.only(left: 7,right: 7),
+                    //                 child: Text("Teacher",style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                    //               )
+                    //           )
+                    //         ],
+                    //       ),
+                    //     );
+                    //   }
+                    // })
+                  children: [
+                    Text(allNotes[index]["title"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color.fromARGB(255, 78, 93, 138)
                           ),
-                        );
-                      }
-                      else {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 50,bottom: 10),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    color: Colors.pink
-                                  ),
-                                  child: CircleAvatar(),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 7,right: 7),
+                            child: Text(allNotes[index]["description"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50,bottom: 10),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.pink
                                 ),
+                                child: CircleAvatar(),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                              ),
-                              Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color.fromARGB(255, 78, 93, 138)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 7,right: 7),
-                                    child: Text("Teacher",style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                                  )
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                    })
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Text(allNotes[index]["school name"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color.fromARGB(255, 78, 93, 138)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 7,right: 7),
+                                  child: Text("Student",style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                                )
+                            )
+                          ],
+                        ),
+                      )
+                  ],
                 ),
               ),
             ),

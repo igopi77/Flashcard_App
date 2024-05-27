@@ -1,3 +1,4 @@
+import 'package:flashcard_app/model/notesDetails.dart';
 import 'package:flashcard_app/view/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,13 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
 
   int index = 5;
   Map<String,dynamic> notesDetails = {};
-  Map<String,Map<String,dynamic>> finalNotes = {};
+  List<Map<String,dynamic>> finalNotes = [] ;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController schoolController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController();
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController schoolController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 10, 9, 45),
@@ -114,12 +112,13 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
           SizedBox(height: 30,),
           GestureDetector(
             onTap: () {
-              // Navigator.push(context, (MaterialPageRoute(builder: (context) => const HomeView())));
+              Navigator.push(context, (MaterialPageRoute(builder: (context) => const HomeView())));
               notesDetails["title"] = titleController.text;
               notesDetails["description"] = descriptionController.text;
               notesDetails["school name"] = schoolController.text;
-              finalNotes["title"] = notesDetails;
-              print(finalNotes);
+              finalNotes.add(notesDetails);
+              NotesDetails.notesDetails.addAll(finalNotes);
+              print(NotesDetails.notesDetails);
             },
             child: Center(
               child: Padding(

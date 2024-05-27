@@ -1,3 +1,3 @@
 class NotesDetails {
-  static Map<String,Map<String,dynamic>> notesDetails = {};
+  static List<Map<String,dynamic>> notesDetails = [];
 }
