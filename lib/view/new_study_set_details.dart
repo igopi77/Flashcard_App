@@ -181,6 +181,10 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                           borderSide: BorderSide(color: Colors.white)
                       )
                   ),
+                style : TextStyle(
+                  color: Colors.white,
+                  fontFamily : "regular"
+                ),
                 controller: termController,
               ),
               SizedBox(height: 6,),
@@ -208,6 +212,10 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                           borderSide: BorderSide(color: Colors.white)
                       )
                   ),
+                style : TextStyle(
+                    color: Colors.white,
+                    fontFamily : "regular"
+                ),
                 controller: definitionController,
               ),
               SizedBox(height: 6,),
@@ -283,6 +291,10 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       color: Colors.white
                   )
               ),
+              style : TextStyle(
+                  color: Colors.white,
+                  fontFamily : "regular"
+              ),
               controller: titleController,
             ),
           ),
@@ -310,6 +322,10 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                     fontSize: 17,
                     color: Colors.white
                 ),
+              ),
+              style : TextStyle(
+                  color: Colors.white,
+                  fontFamily : "regular"
               ),
               maxLines: 4,
               controller: descriptionController,
@@ -339,6 +355,10 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                       fontSize: 17,
                       color: Colors.white
                   )
+              ),
+              style : TextStyle(
+                  color: Colors.white,
+                  fontFamily : "regular"
               ),
               controller: schoolController,
             ),
