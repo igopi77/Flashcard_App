@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class NotesDisplayingView extends StatefulWidget {
   NotesDisplayingView({super.key,required this.content, required this.title,required this.description,required this.author});
@@ -41,13 +42,74 @@ class _NotesDisplayingViewState extends State<NotesDisplayingView> {
             ),
           ],
         ),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+          size: 25
+        ),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
           child: bodyPartForViewing()),
     );
   }
-
+  Widget aboutNoteCard() {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Color.fromARGB(255, 46, 56, 86)
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10,top: 15,bottom: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(widget.title,
+              style: TextStyle(
+                  fontFamily: "black",
+                  fontSize: 25,
+                  color: Colors.white
+              ),
+            ),
+            SizedBox(height: 10,),
+            Text(
+              "About the ${widget.description}",
+              style: TextStyle(
+                fontFamily: "extrabold",
+                fontSize: 17,
+                color: Colors.red.shade300,
+              ),
+            ),
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                CircleAvatar(),
+                SizedBox(width: 10,),
+                Column(
+                  children: [
+                    Text(
+                      "Created by",
+                      style: TextStyle(
+                          fontFamily: "semibold",
+                          fontSize: 17,
+                          color: Colors.white
+                      ),
+                    ),
+                    Text(widget.author,
+                      style: TextStyle(
+                          fontFamily: "extrabold",
+                          fontSize: 17,
+                          color: Colors.red.shade300
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   Widget bodyPartForViewing() {
     return Padding(
       padding: const EdgeInsets.only(left: 20,right: 20),
@@ -55,49 +117,8 @@ class _NotesDisplayingViewState extends State<NotesDisplayingView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 50,),
-          Text(widget.title,
-            style: TextStyle(
-              fontFamily: "black",
-              fontSize: 25,
-              color: Colors.white
-            ),
-          ),
-          SizedBox(height: 10,),
-          Text(
-            "About the ${widget.description}",
-            style: TextStyle(
-              fontFamily: "extrabold",
-              fontSize: 17,
-              color: Colors.red.shade300,
-            ),
-          ),
-          SizedBox(height: 10,),
-          Row(
-            children: [
-              CircleAvatar(),
-              SizedBox(width: 10,),
-              Column(
-                children: [
-                  Text(
-                    "Created by",
-                    style: TextStyle(
-                      fontFamily: "semibold",
-                      fontSize: 17,
-                      color: Colors.white
-                    ),
-                  ),
-                  Text(widget.author,
-                    style: TextStyle(
-                      fontFamily: "extrabold",
-                      fontSize: 17,
-                      color: Colors.red.shade300
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 30,),
+          aboutNoteCard(),
+          SizedBox(height: 20,),
           Text(
             "Terms in this set (${widget.content.length})",
             style: TextStyle(

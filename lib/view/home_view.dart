@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flashcard_app/model/notesDetails.dart';
+import 'package:flashcard_app/services/notes_service.dart';
 import 'package:flashcard_app/view/new_study_set_details.dart';
 import 'package:flashcard_app/view/notes_displaying_view.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +15,23 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
-  List<String> notes = ["Angles","9 Terms", "Kate_Napolitano"];
-  List<Map<String,dynamic>> allNotes = NotesDetails.notesDetails;
+  List<Map<String,dynamic>> allNotes = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    initializeData();
+  }
+
+  Future<void> initializeData() async {
+    await getPost();
+    setState(() {
+      allNotes = NotesDetails.notesDetails;
+    });
+    print("From Home : ${NotesDetails.notesDetails}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +67,10 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ],
+        ),
+        iconTheme: IconThemeData(
+         color: Colors.white,
+         size: 28
         ),
       ),
       drawer: Drawer(
@@ -138,17 +160,37 @@ class _HomeViewState extends State<HomeView> {
             child: GestureDetector(
               onTap: () {
                 List<List<String>> content = [];
-                String title = allNotes[index]["title"];
-                String description = allNotes[index]["description"];
-                String author = allNotes[index]["school name"];
-                allNotes[index].forEach((key, value) {
-                  if (key != "title" && key != "description" && key != "school name") {
-                    content.add(value);
+                if (allNotes[index]["notes"] is List) {
+                  // Check if "notes" is a list
+                  List<dynamic> notes = allNotes[index]["notes"];
+                  if (notes.isNotEmpty) {
+                    // Assuming only one item in the list
+                    Map<String, dynamic> firstNote = notes[0];
+                    String title = firstNote["title"] ?? "";
+                    String description = firstNote["description"] ?? "";
+                    String author = firstNote["school name"] ?? "";
+                    firstNote.forEach((key, value) {
+                      if (key != "title" && key != "description" && key != "school name") {
+                        List<String> temp = List<String>.from(value ?? []);
+                        content.add(temp);
+                      }
+                    });
                   }
-                });
+                }
                 print(content);
-                Navigator.push(context, (MaterialPageRoute(builder: (context) =>  NotesDisplayingView(content: content, description: description, author: author, title: title,))));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NotesDisplayingView(
+                      content: content,
+                      description: allNotes[index]["notes"][0]["description"],
+                      author: allNotes[index]["notes"][0]["school name"],
+                      title: allNotes[index]["notes"][0]["title"],
+                    ),
+                  ),
+                );
               },
+
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -158,61 +200,8 @@ class _HomeViewState extends State<HomeView> {
                   padding: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                      // children: List.generate(notes.length, (index) {
-                      //   if (index == 0) {
-                      //     return Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),);
-                      //   }
-                      //   else if (index == 1) {
-                      //     return Padding(
-                      //       padding: const EdgeInsets.only(top: 20),
-                      //       child: Container(
-                      //         decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(10),
-                      //           color: Color.fromARGB(255, 78, 93, 138)
-                      //         ),
-                      //         child: Padding(
-                      //           padding: const EdgeInsets.only(left: 7,right: 7),
-                      //           child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                      //         )
-                      //       ),
-                      //     );
-                      //   }
-                      //   else {
-                      //     return Padding(
-                      //       padding: const EdgeInsets.only(top: 50,bottom: 10),
-                      //       child: Row(
-                      //         children: [
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(right: 10),
-                      //             child: Container(
-                      //               decoration: BoxDecoration(
-                      //                 borderRadius: BorderRadius.circular(30),
-                      //                 color: Colors.pink
-                      //               ),
-                      //               child: CircleAvatar(),
-                      //             ),
-                      //           ),
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(right: 10),
-                      //             child: Text(notes[index],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                      //           ),
-                      //           Container(
-                      //               decoration: BoxDecoration(
-                      //                   borderRadius: BorderRadius.circular(10),
-                      //                   color: Color.fromARGB(255, 78, 93, 138)
-                      //               ),
-                      //               child: Padding(
-                      //                 padding: const EdgeInsets.only(left: 7,right: 7),
-                      //                 child: Text("Teacher",style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
-                      //               )
-                      //           )
-                      //         ],
-                      //       ),
-                      //     );
-                      //   }
-                      // })
                     children: [
-                      Text(allNotes[index]["title"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                      Text(allNotes[index]["notes"][0]["title"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
                       Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Container(
@@ -222,7 +211,7 @@ class _HomeViewState extends State<HomeView> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(left: 7,right: 7),
-                              child: Text(allNotes[index]["description"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                              child: Text(allNotes[index]["notes"][0]["description"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
                             )
                           ),
                         ),
@@ -242,7 +231,7 @@ class _HomeViewState extends State<HomeView> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
-                                child: Text(allNotes[index]["school name"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
+                                child: Text(allNotes[index]["notes"][0]["school name"],style: TextStyle(fontFamily: "extrabold",fontSize: 17,color: Colors.white),),
                               ),
                               Container(
                                   decoration: BoxDecoration(

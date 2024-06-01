@@ -7,6 +7,7 @@ void main() {
     routes: {
       "/home" : (context) => const HomeView()
     },
+    debugShowCheckedModeBanner: false,
   );
 
   runApp(app);

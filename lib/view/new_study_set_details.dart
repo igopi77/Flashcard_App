@@ -1,4 +1,5 @@
 import 'package:flashcard_app/model/notesDetails.dart';
+import 'package:flashcard_app/services/notes_service.dart';
 import 'package:flashcard_app/view/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -111,14 +112,16 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
           ),
           SizedBox(height: 30,),
           GestureDetector(
-            onTap: () {
-              Navigator.push(context, (MaterialPageRoute(builder: (context) => const HomeView())));
+            onTap: () async {
               notesDetails["title"] = titleController.text;
               notesDetails["description"] = descriptionController.text;
               notesDetails["school name"] = schoolController.text;
               finalNotes.add(notesDetails);
-              NotesDetails.notesDetails.addAll(finalNotes);
-              print(NotesDetails.notesDetails);
+              // NotesDetails.notesDetails.addAll(finalNotes);
+              // print(NotesDetails.notesDetails);
+              if (await postNotes(finalNotes)){
+                Navigator.push(context, (MaterialPageRoute(builder: (context) => const HomeView())));
+              }
             },
             child: Center(
               child: Padding(
@@ -349,7 +352,7 @@ class _NewStudySetDetailsViewState extends State<NewStudySetDetailsView> {
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  hintText: "School name",
+                  hintText: "Author name",
                   hintStyle: TextStyle(
                       fontFamily: "semibold",
                       fontSize: 17,
